@@ -40,6 +40,7 @@ class UserController extends Controller
         if ($token) {
             return $this->setStatusCode(201)->success(['token' => 'bearer ' . $token]);
         }
+
         return $this->failed('账号或密码错误', 400);
     }
 
@@ -47,6 +48,7 @@ class UserController extends Controller
     public function logout()
     {
         Auth::guard('api')->logout();
+
         return $this->success('退出成功...');
     }
 
@@ -54,6 +56,7 @@ class UserController extends Controller
     public function info()
     {
         $user = Auth::guard('api')->user();
+
         return $this->success(new UserResource($user));
     }
 }
