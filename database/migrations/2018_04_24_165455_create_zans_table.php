@@ -17,7 +17,8 @@ class CreateZansTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->default(0);
             $table->integer('post_id')->default(0);
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

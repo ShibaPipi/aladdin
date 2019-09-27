@@ -16,14 +16,16 @@ class CreateTopicsTable extends Migration
         Schema::create('topics', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100); // 主题的姓名
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
 
         Schema::create('post_topics', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('post_id'); // 主题的文章的id
             $table->integer('topic_id'); // 主题的id
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

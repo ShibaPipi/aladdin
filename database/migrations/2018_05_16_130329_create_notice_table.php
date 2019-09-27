@@ -17,7 +17,8 @@ class CreateNoticeTable extends Migration
             $table->increments('id');
             $table->string('title', 50)->dafault('');
             $table->string('content', 1000)->default('');
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
 
         Schema::create('user_notice', function(Blueprint $table){

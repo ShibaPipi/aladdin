@@ -19,7 +19,8 @@ class CreateFansTable extends Migration
             $table->integer('fan_id')->default(0);
             // 关注id
             $table->integer('star_id')->default(0);
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

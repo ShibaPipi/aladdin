@@ -18,7 +18,8 @@ class CreateAdminUsersTable extends Migration
             $table->increments('id');
             $table->string('name', 30);
             $table->string('password', 100);
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
     }
 

@@ -18,7 +18,8 @@ class CreatePermissionAndRoles extends Migration
             $table->increments('id');
             $table->string('name' ,30)->default('');
             $table->string('description', 100)->default('');
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
 
         // 权限表
@@ -26,7 +27,8 @@ class CreatePermissionAndRoles extends Migration
             $table->increments('id');
             $table->string('name', 30)->default('');
             $table->string('description', 100)->default('');
-            $table->timestamps();
+            $table->integer('created_at')->nullable();
+            $table->integer('updated_at')->nullable();
         });
 
         // 权限角色表
@@ -34,7 +36,6 @@ class CreatePermissionAndRoles extends Migration
             $table->increments('id');
             $table->integer('role_id');
             $table->integer('permission_id');
-            $table->timestamps();
         });
 
         // 用户角色表
