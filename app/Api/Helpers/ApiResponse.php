@@ -2,6 +2,7 @@
 
 namespace App\Api\Helpers;
 
+use Illuminate\Http\Resources\Json\JsonResource;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use Response;
 
@@ -40,6 +41,15 @@ trait ApiResponse
     public function respond($data, $header = [])
     {
         return Response::json($data, $this->getStatusCode(), $header);
+    }
+
+    protected function debugEnabled()
+    {
+        return app()->has('debugger') && app('debugger')->isEnabled();
+    }
+    protected function getDebug()
+    {
+        return ['_debugger' => app('debugger')->getData()];
     }
 
     /**
@@ -131,5 +141,23 @@ trait ApiResponse
     public function notFond($message = 'Not Found!')
     {
         return $this->failed($message, Foundationresponse::HTTP_NOT_FOUND);
+    }
+
+    /**
+     * @param JsonResource $resource
+     * @return JsonResource
+     */
+    public function resource(JsonResource $resource)
+    {
+        $additional = [
+            'code' => $this->statusCode,
+        ];
+
+        if ($this->debugEnabled()) {
+            $additional += $this->getDebug();
+        }
+        $resource->additional($additional);
+
+        return $resource;
     }
 }
