@@ -14,9 +14,7 @@ class UserController extends Controller
     public function index()
     {
         //3个用户为一页
-        $users = User::paginate(3);
-
-        return UserResource::collection($users);
+        return $this->resource(UserResource::collection(User::paginate(3)));
     }
 
     //返回单一用户信息

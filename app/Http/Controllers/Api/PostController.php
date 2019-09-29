@@ -10,11 +10,11 @@ class PostController extends Controller
     /**
      * 返回文章列表
      *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     * @return \Illuminate\Http\Resources\Json\JsonResource
      */
     public function index()
     {
-        return PostResource::collection(Post::paginate(3));
+        return $this->resource(PostResource::collection(Post::paginate(3)));
     }
 
     /**
