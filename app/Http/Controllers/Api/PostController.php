@@ -25,6 +25,6 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return $this->success(new PostResource($post));
+        return $this->success(new PostResource($post->comments));
     }
 }
