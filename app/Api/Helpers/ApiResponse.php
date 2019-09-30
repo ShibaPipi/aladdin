@@ -3,6 +3,7 @@
 namespace App\Api\Helpers;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use Response;
 
@@ -144,10 +145,10 @@ trait ApiResponse
     }
 
     /**
-     * @param JsonResource $resource
-     * @return JsonResource
+     * @param ResourceCollection $collection
+     * @return ResourceCollection
      */
-    public function resource(JsonResource $resource)
+    public function resource(ResourceCollection $collection)
     {
         $additional = [
             'code' => $this->statusCode,
@@ -156,8 +157,8 @@ trait ApiResponse
         if ($this->debugEnabled()) {
             $additional += $this->getDebug();
         }
-        $resource->additional($additional);
+        $collection->additional($additional);
 
-        return $resource;
+        return $collection;
     }
 }
