@@ -21,7 +21,8 @@ class PostResource extends JsonResource
             'content' => $this->content,
             'user_id' => $this->user_id,
             'status' => PostEnum::getStatusName($this->status),
-            'comments' => CommentResource::collection($this->whenLoaded('comments')),
+//            'comments' => CommentResource::collection($this->whenLoaded('comments')),
+            'comments' => new CommentCollection($this->whenLoaded('comments')),
             'created_at' => (string)$this->created_at,
             'updated_at' => (string)$this->updated_at
         ];
