@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\UserRequest;
-use App\Http\Resources\Api\UserCollection;
 use App\Http\Resources\Api\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         //3个用户为一页
-        return $this->resource(new UserCollection(User::paginate(3)));
+        return $this->resource(UserResource::collection(User::paginate(3)));
     }
 
     //返回单一用户信息

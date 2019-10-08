@@ -226,4 +226,5 @@ return [
 
     ],
 
+    'page_size' => 10,
 ];

@@ -17,6 +17,6 @@ class Post extends Model
      */
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment')->orderBy('created_at', 'desc');
+        return $this->hasMany('App\Models\Comment')->orderBy('created_at', 'desc')->limit(config('app.page_size'));
     }
 }
