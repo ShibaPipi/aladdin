@@ -38,8 +38,8 @@ class UserResourceCollection extends ResourceCollection
     }
 
     /**
-     * Send fields to hide to UsersResource while processing the collection.
-     * 将隐藏字段通过 UsersResource 处理集合
+     * Send fields to hide to UserResource while processing the collection.
+     * 将隐藏字段通过 UserResource 处理集合
      *
      * @param $request
      * @return array
