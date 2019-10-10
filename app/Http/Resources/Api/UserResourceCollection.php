@@ -7,6 +7,8 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class UserResourceCollection extends ResourceCollection
 {
     /**
+     * 需要隐藏的字段
+     *
      * @var array
      */
     protected $withoutFields = [];

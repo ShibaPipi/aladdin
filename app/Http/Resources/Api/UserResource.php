@@ -8,6 +8,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     /**
+     * 需要隐藏的字段
+     *
      * @var array
      */
     protected $withoutFields = [];
