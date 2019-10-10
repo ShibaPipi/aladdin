@@ -14,7 +14,7 @@ class UserResource extends JsonResource
 
     public static function collection($resource)
     {
-        return tap(new UserCollection($resource), function ($collection) {
+        return tap(new UserResourceCollection($resource), function ($collection) {
             $collection->collects = __CLASS__;
         });
     }

@@ -17,8 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-//        return $this->resource(UserResource::collection(User::paginate(config('app.page_size')))->hide('name'));
-        return UserResource::collection(User::paginate(config('app.page_size')));
+        return $this->resource(UserResource::collection(User::paginate(config('app.page_size')))->hide(['name']));
     }
 
     /**

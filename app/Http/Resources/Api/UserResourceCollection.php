@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class UserCollection extends ResourceCollection
+class UserResourceCollection extends ResourceCollection
 {
     /**
      * @var array
@@ -22,6 +22,12 @@ class UserCollection extends ResourceCollection
         return $this->processCollection($request);
     }
 
+    /**
+     * Set the keys that are supposed to be filtered out.
+     *
+     * @param array $fields
+     * @return $this
+     */
     public function hide(array $fields)
     {
         $this->withoutFields = $fields;
