@@ -33,5 +33,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::get('/posts', 'PostController@index')->name('posts.index');
     // 文章详情
     Route::get('/posts/{post}', 'PostController@show')->name('posts.show');
+    // 编辑 / 修改文章
+    Route::post('/posts', 'PostController@store')->name('posts.store');
 
 });

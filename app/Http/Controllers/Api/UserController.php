@@ -10,20 +10,34 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    //返回用户列表
+    /**
+     * 返回用户列表
+     *
+     * @return \Illuminate\Http\Resources\Json\ResourceCollection
+     */
     public function index()
     {
-        //3个用户为一页
-        return $this->resource(UserResource::collection(User::paginate(3)));
+//        return $this->resource(UserResource::collection(User::paginate(config('app.page_size')))->hide('name'));
+        return UserResource::collection(User::paginate(config('app.page_size')));
     }
 
-    //返回单一用户信息
+    /**
+     * 返回单一用户信息
+     *
+     * @param User $user
+     * @return mixed
+     */
     public function show(User $user)
     {
-        return $this->success(new UserResource($user));
+        return $this->success(UserResource::make($user)->hide(['name']));
     }
 
-    //用户注册
+    /**
+     * 用户注册
+     *
+     * @param UserRequest $request
+     * @return mixed
+     */
     public function store(UserRequest $request)
     {
         User::create($request->all());
@@ -31,7 +45,12 @@ class UserController extends Controller
         return $this->setStatusCode(201)->success('用户注册成功');
     }
 
-    //用户登录
+    /**
+     * 用户登录
+     *
+     * @param Request $request
+     * @return mixed
+     */
     public function login(Request $request)
     {
         $token = Auth::guard('api')->attempt(['name' => $request->name, 'password' => $request->password]);
@@ -42,7 +61,11 @@ class UserController extends Controller
         return $this->failed('账号或密码错误', 400);
     }
 
-    //用户退出
+    /**
+     * 用户退出登录
+     *
+     * @return mixed
+     */
     public function logout()
     {
         Auth::guard('api')->logout();
@@ -50,7 +73,11 @@ class UserController extends Controller
         return $this->success('退出成功...');
     }
 
-    //返回当前登录用户信息
+    /**
+     * 返回当前登录用户信息
+     *
+     * @return mixed
+     */
     public function info()
     {
         $user = Auth::guard('api')->user();

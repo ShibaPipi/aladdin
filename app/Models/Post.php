@@ -19,4 +19,12 @@ class Post extends Model
     {
         return $this->hasMany('App\Models\Comment')->orderBy('created_at', 'desc')->limit(config('app.page_size'));
     }
+
+    /**
+     * 获取文章的评论
+     */
+    public function likes()
+    {
+        return $this->hasMany('App\Models\Likes')->orderBy('created_at', 'desc')->limit(config('app.page_size'));
+    }
 }
