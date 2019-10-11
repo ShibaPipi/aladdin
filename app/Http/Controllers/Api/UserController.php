@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return $this->resource(UserResource::collection(User::paginate(config('app.page_size')))->hide(['name']));
+        return $this->resource(UserResource::collection(User::latest()->paginate(config('app.page_size')))->hide([]));
     }
 
     /**
@@ -26,9 +26,9 @@ class UserController extends Controller
      * @param User $user
      * @return mixed
      */
-    public function show(User $user)
+    public function show($id)
     {
-        return $this->success(UserResource::make($user)->hide(['name']));
+        return $this->success(UserResource::make(User::findOrFail($id))->hide([]));
     }
 
     /**

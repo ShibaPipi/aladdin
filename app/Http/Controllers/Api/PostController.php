@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return $this->resource(PostResource::collection(Post::withcount(['comments', 'likes'])->paginate(config('app.page_size'))));
+        return $this->resource(PostResource::collection(Post::latest()->withcount(['comments', 'likes'])->paginate(config('app.page_size'))));
     }
 
     /**
@@ -24,9 +24,9 @@ class PostController extends Controller
      * @param Post $post
      * @return mixed
      */
-    public function show(Post $post)
+    public function show($id)
     {
-        return $this->success(new PostResource($post->load('comments')));
+        return $this->success(PostResource::make(Post::with('comments')->withCount('likes')->findOrFail($id)));
     }
 
     public function store(PostRequest $request)

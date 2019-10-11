@@ -3,24 +3,9 @@
 namespace App\Http\Resources\Api;
 
 use App\Models\Enum\UserEnum;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-    /**
-     * 需要隐藏的字段
-     *
-     * @var array
-     */
-    protected $withoutFields = [];
-
-    public static function collection($resource)
-    {
-        return tap(new UserResourceCollection($resource), function ($collection) {
-            $collection->collects = __CLASS__;
-        });
-    }
-
     /**
      * Transform the resource into an array.
      *
@@ -36,31 +21,5 @@ class UserResource extends JsonResource
             'created_at' => (string)$this->created_at,
             'updated_at' => (string)$this->updated_at
         ]);
-    }
-
-    /**
-     * Set the keys that are supposed to be filtered out.
-     * 设置需要隐藏过滤掉的键
-     *
-     * @param array $fields
-     * @return $this
-     */
-    public function hide(array $fields)
-    {
-        $this->withoutFields = $fields;
-
-        return $this;
-    }
-
-    /**
-     * Remove the filtered keys.
-     * 删除隐藏的键
-     *
-     * @param $array
-     * @return array
-     */
-    protected function filterFields(array $array)
-    {
-        return collect($array)->forget($this->withoutFields)->toArray();
     }
 }
