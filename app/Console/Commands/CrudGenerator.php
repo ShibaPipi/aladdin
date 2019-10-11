@@ -58,7 +58,7 @@ class CrudGenerator extends Command
     {
         $modelTemplate = str_replace(
             ['{{modelName}}'],
-            [$name],
+            [array_pop(explode('/', $name))],
             $this->getStub('Model')
         );
 
@@ -67,16 +67,20 @@ class CrudGenerator extends Command
 
     protected function controller($name)
     {
+        $controllerName = array_pop(explode('/', $name));
+
         $controllerTemplate = str_replace(
             [
-                '{{modelName}}',
-                '{{modelNamePluralLowerCase}}',
-                '{{modelNameSingularLowerCase}}'
+                '{{name}}',
+                '{{controllerName}}',
+                '{{controllerNamePluralLowerCase}}',
+                '{{controllerNameSingularLowerCase}}'
             ],
             [
                 $name,
-                strtolower(str_plural($name)),
-                strtolower($name)
+                $controllerName,
+                strtolower(str_plural($controllerName)),
+                strtolower($controllerName)
             ],
             $this->getStub('Controller')
         );

@@ -2,43 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\{{modelName}}Request;
-use App\{{modelName}};
+use App\Http\Requests\{{name}}Request;
+use App\{{name}};
 
-class {{modelName}}Controller extends Controller
+class {{controllerName}}Controller extends Controller
 {
     public function index()
     {
-        ${{modelNamePluralLowerCase}} = {{modelName}}::latest()->get();
+        ${{controllerNamePluralLowerCase}} = {{controllerName}}::latest()->get();
 
-        return response()->json(${{modelNamePluralLowerCase}});
+        return response()->json(${{controllerNamePluralLowerCase}});
     }
 
-    public function store({{modelName}}Request $request)
+    public function store({{controllerName}}Request $request)
     {
-        ${{modelNameSingularLowerCase}} = {{modelName}}::create($request->all());
+        ${{controllerNameSingularLowerCase}} = {{controllerName}}::create($request->all());
 
-        return response()->json(${{modelNameSingularLowerCase}}, 201);
+        return response()->json(${{controllerNameSingularLowerCase}}, 201);
     }
 
     public function show($id)
     {
-        ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
+        ${{controllerNameSingularLowerCase}} = {{controllerName}}::findOrFail($id);
 
-        return response()->json(${{modelNameSingularLowerCase}});
+        return response()->json(${{controllerNameSingularLowerCase}});
     }
 
-    public function update({{modelName}}Request $request, $id)
+    public function update({{controllerName}}Request $request, $id)
     {
-        ${{modelNameSingularLowerCase}} = {{modelName}}::findOrFail($id);
-        ${{modelNameSingularLowerCase}}->update($request->all());
+        ${{controllerNameSingularLowerCase}} = {{controllerName}}::findOrFail($id);
+        ${{controllerNameSingularLowerCase}}->update($request->all());
 
-        return response()->json(${{modelNameSingularLowerCase}}, 200);
+        return response()->json(${{controllerNameSingularLowerCase}}, 200);
     }
 
     public function destroy($id)
     {
-        {{modelName}}::destroy($id);
+        {{controllerName}}::destroy($id);
 
         return response()->json(null, 204);
     }
