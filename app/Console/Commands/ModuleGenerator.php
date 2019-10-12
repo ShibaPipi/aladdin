@@ -5,14 +5,14 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
-class CrudGenerator extends Command
+class ModuleGenerator extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'crud:generator 
+    protected $signature = 'module:generate 
         {name : Class (singular) for example User}';
 
     /**
@@ -20,7 +20,7 @@ class CrudGenerator extends Command
      *
      * @var string
      */
-    protected $description = 'Create CRUD operations';
+    protected $description = 'Create Module operations';
 
     /**
      * Create a new command instance.
