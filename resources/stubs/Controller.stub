@@ -1,44 +1,44 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers{{path}};
 
 use App\Http\Requests\{{name}}Request;
-use App\{{name}};
+use App\Models\{{moduleName}};
 
-class {{controllerName}}Controller extends Controller
+class {{moduleName}}Controller extends Controller
 {
     public function index()
     {
-        ${{controllerNamePluralLowerCase}} = {{controllerName}}::latest()->get();
+        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::latest()->get();
 
-        return response()->json(${{controllerNamePluralLowerCase}});
+        return response()->json(${{moduleNameLowerCaseFirst}});
     }
 
-    public function store({{controllerName}}Request $request)
+    public function store({{moduleName}}Request $request)
     {
-        ${{controllerNameSingularLowerCase}} = {{controllerName}}::create($request->all());
+        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::create($request->all());
 
-        return response()->json(${{controllerNameSingularLowerCase}}, 201);
+        return response()->json(${{moduleNameLowerCaseFirst}}, 201);
     }
 
     public function show($id)
     {
-        ${{controllerNameSingularLowerCase}} = {{controllerName}}::findOrFail($id);
+        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::findOrFail($id);
 
-        return response()->json(${{controllerNameSingularLowerCase}});
+        return response()->json(${{moduleNameLowerCaseFirst}});
     }
 
-    public function update({{controllerName}}Request $request, $id)
+    public function update({{moduleName}}Request $request, $id)
     {
-        ${{controllerNameSingularLowerCase}} = {{controllerName}}::findOrFail($id);
-        ${{controllerNameSingularLowerCase}}->update($request->all());
+        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::findOrFail($id);
+        ${{moduleNameLowerCaseFirst}}->update($request->all());
 
-        return response()->json(${{controllerNameSingularLowerCase}}, 200);
+        return response()->json(${{moduleNameLowerCaseFirst}}, 200);
     }
 
     public function destroy($id)
     {
-        {{controllerName}}::destroy($id);
+        {{moduleName}}::destroy($id);
 
         return response()->json(null, 204);
     }

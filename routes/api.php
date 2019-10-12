@@ -37,3 +37,4 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::post('/posts', 'PostController@store')->name('posts.store');
 
 });
+Route::resource('cars', 'CarController');

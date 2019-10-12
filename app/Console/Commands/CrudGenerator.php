@@ -39,60 +39,102 @@ class CrudGenerator extends Command
      */
     public function handle()
     {
-        $name = $this->argument('name');
+        $name = str_replace('/', '\\', $this->argument('name'));
+        $nameArray = explode('\\', $name);
+        $moduleName = array_pop($nameArray);
+        $path = implode('\\', $nameArray);
+        if ($path) {
+            $path = '\\' . $path;
+        } else {
+            $moduleName = $name;
+        }
+        $arguments = compact('name', 'moduleName', 'path');
 
-        $this->controller($name);
-        $this->model($name);
-        $this->request($name);
+        $this->model($arguments);
+        $this->controller($arguments);
+        $this->request($arguments);
+        $this->resource($arguments);
+        $this->resourceCollection($arguments);
 
-        File::append(base_path('routes/api.php'), 'Route::resource(\'' . str_plural(strtolower($name)) . "', '{$name}Controller');");
-//        $this->info();
+//        File::append(base_path('routes/api.php'), 'Route::resource(\'' . str_plural(strtolower($name)) . "', '{$name}Controller');");
+        $this->info("Create {$name} module successfully.");
     }
 
-    protected function getStub($type)
+    /**
+     * Get the stub file
+     *
+     * @param $type
+     * @return false|string
+     */
+    protected function getStub(string $type)
     {
-        return file_get_contents(resource_path("stubs/$type.stub"));
+        return file_get_contents(resource_path("stubs/{$type}.stub"));
     }
 
-    protected function model($name)
+    /**
+     * Generate Class Model
+     *
+     * @param array $arguments
+     */
+    protected function model(array $arguments)
     {
         $modelTemplate = str_replace(
-            ['{{modelName}}'],
-            [array_pop(explode('/', $name))],
+            [
+                '{{path}}',
+                '{{moduleName}}'
+            ],
+            [
+                $arguments['path'],
+                $arguments['moduleName']
+            ],
             $this->getStub('Model')
         );
 
-        file_put_contents(app_path("/{$name}.php"), $modelTemplate);
+        file_put_contents(app_path("/Models/{$arguments['moduleName']}.php"), $modelTemplate);
     }
 
-    protected function controller($name)
+    /**
+     * Generate Class Controller
+     *
+     * @param array $arguments
+     */
+    protected function controller(array $arguments)
     {
-        $controllerName = array_pop(explode('/', $name));
-
         $controllerTemplate = str_replace(
             [
+                '{{path}}',
                 '{{name}}',
-                '{{controllerName}}',
-                '{{controllerNamePluralLowerCase}}',
-                '{{controllerNameSingularLowerCase}}'
+                '{{moduleName}}',
+                '{{moduleNameLowerCaseFirst}}'
             ],
             [
-                $name,
-                $controllerName,
-                strtolower(str_plural($controllerName)),
-                strtolower($controllerName)
+                $arguments['path'],
+                $arguments['name'],
+                $arguments['moduleName'],
+                lcfirst($arguments['moduleName'])
             ],
             $this->getStub('Controller')
         );
 
-        file_put_contents(app_path("/Http/Controllers/{$name}Controller.php"), $controllerTemplate);
+        file_put_contents(app_path("/Http/Controllers/{$arguments['name']}Controller.php"), $controllerTemplate);
     }
 
-    protected function request($name)
+    /**
+     * Generate Class Request
+     *
+     * @param array $arguments
+     */
+    protected function request(array $arguments)
     {
         $requestTemplate = str_replace(
-            ['{{modelName}}'],
-            [$name],
+            [
+                '{{path}}',
+                '{{moduleName}}'
+            ],
+            [
+                $arguments['path'],
+                $arguments['moduleName']
+            ],
             $this->getStub('Request')
         );
 
@@ -100,6 +142,58 @@ class CrudGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        file_put_contents(app_path("/Http/Requests/{$name}Request.php"), $requestTemplate);
+        file_put_contents(app_path("/Http/Requests/{$arguments['name']}Request.php"), $requestTemplate);
+    }
+
+    /**
+     * Generate Class Resource
+     *
+     * @param array $arguments
+     */
+    protected function resource(array $arguments)
+    {
+        $resourceTemplate = str_replace(
+            [
+                '{{path}}',
+                '{{moduleName}}'
+            ],
+            [
+                $arguments['path'],
+                $arguments['moduleName']
+            ],
+            $this->getStub('Resource')
+        );
+
+        if (!file_exists($path = app_path('/Http/Resources'))) {
+            mkdir($path, 0777, true);
+        }
+
+        file_put_contents(app_path("/Http/Resources/{$arguments['name']}Resource.php"), $resourceTemplate);
+    }
+
+    /**
+     * Generate Class Resource
+     *
+     * @param array $arguments
+     */
+    protected function resourceCollection(array $arguments)
+    {
+        $resourceCollectionTemplate = str_replace(
+            [
+                '{{path}}',
+                '{{moduleName}}'
+            ],
+            [
+                $arguments['path'],
+                $arguments['moduleName']
+            ],
+            $this->getStub('ResourceCollection')
+        );
+
+        if (!file_exists($path = app_path('/Http/Resources'))) {
+            mkdir($path, 0777, true);
+        }
+
+        file_put_contents(app_path("/Http/Resources/{$arguments['name']}ResourceCollection.php"), $resourceCollectionTemplate);
     }
 }
