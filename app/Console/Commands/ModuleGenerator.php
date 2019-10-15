@@ -13,7 +13,7 @@ class ModuleGenerator extends Command
      * @var string
      */
     protected $signature = 'module:generate 
-        {name : Class (singular) for example User}';
+        {name : Class(singular), for example, User}';
 
     /**
      * The console command description.
@@ -39,8 +39,9 @@ class ModuleGenerator extends Command
      */
     public function handle()
     {
-        $name = str_replace('/', '\\', $this->argument('name'));
-        $nameArray = explode('\\', $name);
+        $name = $this->argument('name');
+        $argumentName = str_replace('/', '\\', $name);
+        $nameArray = explode('/', $name);
         $moduleName = array_pop($nameArray);
         $path = implode('\\', $nameArray);
         if ($path) {
@@ -48,8 +49,8 @@ class ModuleGenerator extends Command
         } else {
             $moduleName = $name;
         }
-        $arguments = compact('name', 'moduleName', 'path');
-
+        $arguments = compact('argumentName', 'name', 'moduleName', 'path');
+//        print_r($arguments);
         $this->model($arguments);
         $this->controller($arguments);
         $this->request($arguments);
@@ -57,7 +58,6 @@ class ModuleGenerator extends Command
         $this->resourceCollection($arguments);
 
 //        File::append(base_path('routes/api.php'), 'Route::resource(\'' . str_plural(strtolower($name)) . "', '{$name}Controller');");
-        $this->info("Create {$name} module successfully.");
     }
 
     /**
@@ -90,7 +90,12 @@ class ModuleGenerator extends Command
             $this->getStub('Model')
         );
 
-        file_put_contents(app_path("/Models/{$arguments['moduleName']}.php"), $modelTemplate);
+        if (file_put_contents(app_path("/Models/{$arguments['moduleName']}.php"), $modelTemplate)) {
+            $this->info("Create {$arguments['moduleName']} Model successfully.");
+        } else {
+            $this->error('failed.');
+        }
+
     }
 
     /**
@@ -104,19 +109,26 @@ class ModuleGenerator extends Command
             [
                 '{{path}}',
                 '{{name}}',
+                '{{argumentName}}',
                 '{{moduleName}}',
                 '{{moduleNameLowerCaseFirst}}'
             ],
             [
                 $arguments['path'],
                 $arguments['name'],
+                $arguments['argumentName'],
                 $arguments['moduleName'],
                 lcfirst($arguments['moduleName'])
             ],
             $this->getStub('Controller')
         );
 
-        file_put_contents(app_path("/Http/Controllers/{$arguments['name']}Controller.php"), $controllerTemplate);
+        if (file_put_contents(app_path("/Http/Controllers/{$arguments['name']}Controller.php"), $controllerTemplate)) {
+            $this->info("Create {$arguments['name']} Controller successfully.");
+        } else {
+            $this->error('failed.');
+        }
+
     }
 
     /**
@@ -142,7 +154,12 @@ class ModuleGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        file_put_contents(app_path("/Http/Requests/{$arguments['name']}Request.php"), $requestTemplate);
+        if (file_put_contents(app_path("/Http/Requests/{$arguments['name']}Request.php"), $requestTemplate)) {
+            $this->info("Create {$arguments['name']} Request successfully.");
+        } else {
+            $this->error('failed.');
+        }
+
     }
 
     /**
@@ -168,7 +185,12 @@ class ModuleGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        file_put_contents(app_path("/Http/Resources/{$arguments['name']}Resource.php"), $resourceTemplate);
+        if (file_put_contents(app_path("/Http/Resources/{$arguments['name']}Resource.php"), $resourceTemplate)) {
+            $this->info("Create {$arguments['name']} Resource successfully.");
+        } else {
+            $this->error('failed.');
+        }
+
     }
 
     /**
@@ -194,6 +216,11 @@ class ModuleGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        file_put_contents(app_path("/Http/Resources/{$arguments['name']}ResourceCollection.php"), $resourceCollectionTemplate);
+        if (file_put_contents(app_path("/Http/Resources/{$arguments['name']}ResourceCollection.php"), $resourceCollectionTemplate)) {
+            $this->info("Create {$arguments['name']} ResourceCollection successfully.");
+        } else {
+            $this->error('failed.');
+        }
+
     }
 }
