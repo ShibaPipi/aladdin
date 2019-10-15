@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\File;
 
 class ModuleGenerator extends Command
 {
+    const ERROR_MSG = 'Create module failed.';
+
     /**
      * The name and signature of the console command.
      *
@@ -50,7 +52,7 @@ class ModuleGenerator extends Command
             $moduleName = $name;
         }
         $arguments = compact('argumentName', 'name', 'moduleName', 'path');
-//        print_r($arguments);
+
         $this->model($arguments);
         $this->controller($arguments);
         $this->request($arguments);
@@ -90,10 +92,16 @@ class ModuleGenerator extends Command
             $this->getStub('Model')
         );
 
-        if (file_put_contents(app_path("/Models/{$arguments['moduleName']}.php"), $modelTemplate)) {
-            $this->info("Create {$arguments['moduleName']} Model successfully.");
+        if (!file_exists($path = app_path('/Models'))) {
+            mkdir($path, 0777, true);
+        }
+
+        if (file_exists($file = app_path("/Models/{$arguments['moduleName']}.php"))) {
+            $this->comment("The class Models/{$arguments['moduleName']} had been created.");
+        } elseif (file_put_contents($file, $modelTemplate)) {
+            $this->info("Create class {$arguments['moduleName']} Model successfully.");
         } else {
-            $this->error('failed.');
+            $this->error(self::ERROR_MSG);
         }
 
     }
@@ -108,14 +116,12 @@ class ModuleGenerator extends Command
         $controllerTemplate = str_replace(
             [
                 '{{path}}',
-                '{{name}}',
                 '{{argumentName}}',
                 '{{moduleName}}',
                 '{{moduleNameLowerCaseFirst}}'
             ],
             [
                 $arguments['path'],
-                $arguments['name'],
                 $arguments['argumentName'],
                 $arguments['moduleName'],
                 lcfirst($arguments['moduleName'])
@@ -123,10 +129,16 @@ class ModuleGenerator extends Command
             $this->getStub('Controller')
         );
 
-        if (file_put_contents(app_path("/Http/Controllers/{$arguments['name']}Controller.php"), $controllerTemplate)) {
-            $this->info("Create {$arguments['name']} Controller successfully.");
+        if (!file_exists($path = app_path('/Http/Controllers'))) {
+            mkdir($path, 0777, true);
+        }
+
+        if (file_exists($file = app_path("/Http/Controllers/{$arguments['name']}Controller.php"))) {
+            $this->comment("The class {$arguments['name']}Controller had been created.");
+        } elseif (file_put_contents($file, $controllerTemplate)) {
+            $this->info("Create class {$arguments['name']} Controller successfully.");
         } else {
-            $this->error('failed.');
+            $this->error(self::ERROR_MSG);
         }
 
     }
@@ -154,10 +166,12 @@ class ModuleGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        if (file_put_contents(app_path("/Http/Requests/{$arguments['name']}Request.php"), $requestTemplate)) {
-            $this->info("Create {$arguments['name']} Request successfully.");
+        if (file_exists($file = app_path("/Http/Requests/{$arguments['name']}Request.php"))) {
+            $this->comment("The class {$arguments['name']}Request had been created.");
+        } elseif (file_put_contents($file, $requestTemplate)) {
+            $this->info("Create class {$arguments['name']} Request successfully.");
         } else {
-            $this->error('failed.');
+            $this->error(self::ERROR_MSG);
         }
 
     }
@@ -185,10 +199,12 @@ class ModuleGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        if (file_put_contents(app_path("/Http/Resources/{$arguments['name']}Resource.php"), $resourceTemplate)) {
-            $this->info("Create {$arguments['name']} Resource successfully.");
+        if (file_exists($file = app_path("/Http/Resources/{$arguments['name']}Resource.php"))) {
+            $this->comment("The class {$arguments['name']}Resource had been created.");
+        } elseif (file_put_contents($file, $resourceTemplate)) {
+            $this->info("Create class {$arguments['name']} Resource successfully.");
         } else {
-            $this->error('failed.');
+            $this->error(self::ERROR_MSG);
         }
 
     }
@@ -216,11 +232,18 @@ class ModuleGenerator extends Command
             mkdir($path, 0777, true);
         }
 
-        if (file_put_contents(app_path("/Http/Resources/{$arguments['name']}ResourceCollection.php"), $resourceCollectionTemplate)) {
-            $this->info("Create {$arguments['name']} ResourceCollection successfully.");
+        if (file_exists($file = app_path("/Http/Resources/{$arguments['name']}ResourceCollection.php"))) {
+            $this->comment("The class {$arguments['name']}ResourceCollection had been created.");
+        } elseif (file_put_contents($file, $resourceCollectionTemplate)) {
+            $this->info("Create class {$arguments['name']} ResourceCollection successfully.");
         } else {
-            $this->error('failed.');
+            $this->error(self::ERROR_MSG);
         }
 
+    }
+
+    protected function touchFile()
+    {
+        //
     }
 }
