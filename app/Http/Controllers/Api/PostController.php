@@ -15,20 +15,33 @@ class PostController extends Controller
      */
     public function index()
     {
-        return $this->resource(PostResource::collection(Post::latest()->withcount(['comments', 'likes'])->paginate(config('app.page_size'))));
+        return $this->resource(PostResource::collection(
+            Post::latest()
+                ->withcount(['comments', 'likes'])
+                ->paginate(config('app.page_size'))
+        ));
     }
 
     /**
      * 返回单一文章信息
      *
-     * @param Post $post
+     * @param $id
      * @return mixed
      */
     public function show($id)
     {
-        return $this->success(PostResource::make(Post::with('comments')->withCount('likes')->findOrFail($id)));
+        return $this->success(
+            PostResource::make(Post::with('comments')
+                ->withCount('likes')
+                ->findOrFail($id))
+        );
     }
 
+    /**
+     * 添加 / 编辑文章
+     * @param PostRequest $request
+     * @return mixed
+     */
     public function store(PostRequest $request)
     {
         Post::updateOrCreate(['id' => $request->id], $request->all());
