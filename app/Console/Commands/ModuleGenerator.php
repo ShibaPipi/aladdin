@@ -52,7 +52,7 @@ class ModuleGenerator extends Command
             $moduleName = $name;
         }
         $arguments = compact('argumentName', 'name', 'moduleName', 'path');
-
+//print_r($arguments);
         $this->model($arguments);
         $this->controller($arguments);
         $this->request($arguments);

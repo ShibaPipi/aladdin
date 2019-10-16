@@ -7,39 +7,44 @@ use App\Models\{{moduleName}};
 
 class {{moduleName}}Controller extends Controller
 {
+    /**
+     * @return \Illuminate\Http\Resources\Json\JsonResource
+     */
     public function index()
     {
-        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::latest()->get();
-
-        return response()->json(${{moduleNameLowerCaseFirst}});
+        return $this->resource({{moduleName}}Resource::collection(
+            {{moduleName}}::latest()->paginate(10)
+        ));
     }
 
+    /**
+     * @param {{moduleName}}Request $request
+     * @return mixed
+     */
     public function store({{moduleName}}Request $request)
     {
-        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::create($request->all());
+        Post::updateOrCreate(['id' => $request->id], $request->all());
 
-        return response()->json(${{moduleNameLowerCaseFirst}}, 201);
+        return $this->setStatusCode(201)->success('操作成功');
     }
 
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function show($id)
     {
-        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::findOrFail($id);
-
-        return response()->json(${{moduleNameLowerCaseFirst}});
+        return $this->success({{moduleName}}Resource::make({{moduleName}}->findOrFail($id)));
     }
 
-    public function update({{moduleName}}Request $request, $id)
-    {
-        ${{moduleNameLowerCaseFirst}} = {{moduleName}}::findOrFail($id);
-        ${{moduleNameLowerCaseFirst}}->update($request->all());
-
-        return response()->json(${{moduleNameLowerCaseFirst}}, 200);
-    }
-
+    /**
+     * @param $id
+     * @return mixed
+     */
     public function destroy($id)
     {
         {{moduleName}}::destroy($id);
 
-        return response()->json(null, 204);
+        return $this->setStatusCode(204)->success('删除成功');
     }
 }
