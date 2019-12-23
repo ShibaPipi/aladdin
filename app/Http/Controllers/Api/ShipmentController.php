@@ -14,7 +14,9 @@ class ShipmentController extends Controller
     public function index()
     {
         return $this->resource(ShipmentResource::collection(
-            Shipment::latest()->paginate(10)
+            Shipment::latest()->paginate(
+                request('limit') ?? config('app.page_size')
+            )
         ));
     }
 

@@ -36,5 +36,9 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     // 编辑 / 修改文章
     Route::post('/posts', 'PostController@store')->name('posts.store');
 
+    // 采购列表
+    Route::get('/purchases', 'PurchaseController@index')->name('purchases.index');
+    // 采购列表
+    Route::get('/shipments', 'ShipmentController@index')->name('shipments.index');
 });
 Route::resource('cars', 'CarController');
