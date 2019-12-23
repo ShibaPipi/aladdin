@@ -3,6 +3,7 @@
 namespace App\Http\Controllers{{path}};
 
 use App\Http\Requests\{{argumentName}}Request;
+use App\Http\Resources\{{argumentName}}Resource;
 use App\Models\{{moduleName}};
 
 class {{moduleName}}Controller extends Controller
@@ -23,7 +24,7 @@ class {{moduleName}}Controller extends Controller
      */
     public function store({{moduleName}}Request $request)
     {
-        Post::updateOrCreate(['id' => $request->id], $request->all());
+        {{moduleName}}::updateOrCreate(['id' => $request->id], $request->all());
 
         return $this->setStatusCode(201)->success('操作成功');
     }
@@ -34,7 +35,7 @@ class {{moduleName}}Controller extends Controller
      */
     public function show($id)
     {
-        return $this->success({{moduleName}}Resource::make({{moduleName}}->findOrFail($id)));
+        return $this->success({{moduleName}}Resource::make({{moduleName}}::findOrFail($id)));
     }
 
     /**
