@@ -24,6 +24,26 @@ class PurchaseRequest extends FormRequest
         switch ($this->method()) {
             case 'GET':
             case 'POST':
+                return [
+                    'reference_no' => ['required'],
+//                    'order_no',
+//                    'contract_no',
+//                    'order_date',
+//                    'supplier_name',
+//                    'product_name',
+//                    'product_standard',
+//                    'product_quantity',
+//                    'unit',
+//                    'price_yuan',
+//                    'price_dollar',
+//                    'refund_rate',
+//                    'pay_type',
+//                    'delivery_date',
+//                    'total_price_yuan',
+//                    'total_price_dollar',
+//                    'is_paid',
+//                    'pay_date',
+                ];
             case 'PUT':
             case 'PATCH':
             case 'DELETE':
@@ -39,6 +59,8 @@ class PurchaseRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'reference_no.required' => ':attribute 必传',
+        ];
     }
 }
