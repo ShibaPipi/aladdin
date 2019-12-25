@@ -24,6 +24,9 @@ class ShipmentRequest extends FormRequest
         switch ($this->method()) {
             case 'GET':
             case 'POST':
+                return [
+                    'reference_no' => ['required'],
+                ];
             case 'PUT':
             case 'PATCH':
             case 'DELETE':
@@ -39,6 +42,8 @@ class ShipmentRequest extends FormRequest
      */
     public function messages()
     {
-        return [];
+        return [
+            'reference_no.required' => ':attribute 必传',
+        ];
     }
 }

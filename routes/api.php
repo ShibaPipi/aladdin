@@ -42,5 +42,7 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     Route::post('/purchases', 'PurchaseController@store')->name('purchases.store');
     // 装运列表
     Route::get('/shipments', 'ShipmentController@index')->name('shipments.index');
+    // 新增装运
+    Route::post('/shipments', 'ShipmentController@store')->name('shipments.store');
 });
 Route::resource('cars', 'CarController');

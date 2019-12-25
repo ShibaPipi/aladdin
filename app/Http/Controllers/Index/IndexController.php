@@ -12,6 +12,13 @@ class IndexController extends Controller
     public function index()
     {
 //        phpinfo();
-        dd(Schema::getColumnListing('purchases'));
+        $arr = Schema::getColumnListing('shipments');
+        $str = '';
+        $str .= "[";
+        foreach ($arr as $val) {
+            $str.="'${val}',\n";
+        }
+        $str .= "]";
+        echo $str;
     }
 }
