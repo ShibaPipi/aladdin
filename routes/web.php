@@ -11,8 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', 'SpaController@index')->where('any', '.*');
 
 Route::get('/index', 'Index\IndexController@index');
+Route::get('/example', function () {
+    return view('example');
+});
+
+Route::get('/{any}', 'SpaController@index')->where('any', '.*');
