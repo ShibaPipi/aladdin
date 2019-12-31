@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/api/detail.json', 'Index\IndexController@detail')->name('index.detail');
 
 Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
     //用户注册
