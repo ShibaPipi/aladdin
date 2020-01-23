@@ -18,7 +18,9 @@ class PostController extends Controller
         return $this->resource(PostResource::collection(
             Post::latest()
                 ->withcount(['comments', 'likes'])
-                ->paginate(config('app.page_size'))
+                ->paginate(
+                    request('limit') ?? config('app.page_size')
+                )
         ));
     }
 

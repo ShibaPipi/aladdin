@@ -4,6 +4,7 @@ namespace App\Http\Resources\Api;
 
 use App\Models\Enum\PostEnum;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class PostResource extends JsonResource
 {
@@ -19,6 +20,7 @@ class PostResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
+            'content_limit' => Str::limit($this->content),
             'user_id' => $this->user_id,
             'status' => PostEnum::getStatusName($this->status),
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
